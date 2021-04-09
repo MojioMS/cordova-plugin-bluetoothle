@@ -777,7 +777,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
     }
 
     advertiser.stopAdvertising(advertiseCallback);
-    
+
     if (isAdvertising) isAdvertising = false;
 
     JSONObject returnObj = new JSONObject();
@@ -2790,7 +2790,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
     if (isNotArgsObject(obj, callbackContext)) {
       return;
     }
-    
+
     String address = getAddress(obj);
     if (isNotAddress(address, callbackContext)) {
       return;
@@ -2800,7 +2800,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
     if (pin==null) {
       return;
     }
-    
+
     Log.d("BLE","set pin "  + address  + " " + pin);
     JSONObject returnObj = new JSONObject();
     try {
@@ -2881,7 +2881,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
             // Reset isAdvertising when adapter is off (if STATE_TURNING_OFF doesn't trigger)
             if (isAdvertising) isAdvertising = false;
-            
+
             gattServer = null;
 
             pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
@@ -2928,7 +2928,19 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
         CallbackContext callback = (CallbackContext) bonds.get(address);
         if (callback == null) {
-          return;
+            boolean found = false;
+          for (Map.Entry<String, Callback> set : bonds.entrySet()) {
+            BluetoothDevice device = bluetoothAdapter.getRemoteDevice(set.getKey());
+            if (device != null) {
+              if (device.getAlias() == "SNR10") {
+                  callback = set.getValue();
+                  found = true;
+              }
+            }
+          }
+          if (!found) {
+              return;
+          }
         }
 
         JSONObject returnObj = new JSONObject();
@@ -2960,7 +2972,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
       }
     }
   };
-  
+
   private BroadcastReceiver mPairingRequestReceiver;
 
   @Override
