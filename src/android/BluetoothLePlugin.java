@@ -2928,19 +2928,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
         CallbackContext callback = (CallbackContext) bonds.get(address);
         if (callback == null) {
-            boolean found = false;
-          for (Map.Entry<String, Callback> set : bonds.entrySet()) {
-            BluetoothDevice device = bluetoothAdapter.getRemoteDevice(set.getKey());
-            if (device != null) {
-              if (device.getAlias() == "SNR10") {
-                  callback = set.getValue();
-                  found = true;
-              }
-            }
-          }
-          if (!found) {
-              return;
-          }
+          return;
         }
 
         JSONObject returnObj = new JSONObject();
