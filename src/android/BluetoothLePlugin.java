@@ -765,7 +765,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
     }
 
     advertiser.stopAdvertising(advertiseCallback);
-    
+
     if (isAdvertising) isAdvertising = false;
 
     JSONObject returnObj = new JSONObject();
@@ -1227,7 +1227,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
     Set<BluetoothDevice> devices = bluetoothAdapter.getBondedDevices();
     for (BluetoothDevice device : devices) {
-      if (device.getType() != BluetoothDevice.DEVICE_TYPE_LE) {
+      if (device.getType() != BluetoothDevice.DEVICE_TYPE_LE && device.getType() !== BluetoothDevice.DEVICE_TYPE_DUAL) {
         continue;
       }
 
@@ -2801,7 +2801,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
             // Reset isAdvertising when adapter is off (if STATE_TURNING_OFF doesn't trigger)
             if (isAdvertising) isAdvertising = false;
-            
+
             gattServer = null;
 
             pluginResult = new PluginResult(PluginResult.Status.OK, returnObj);
