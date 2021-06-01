@@ -1451,7 +1451,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
         if (wasConnected(address, callbackContext)) {
             return;
-        } else forceConnected(address, callbackContext) {
+        } else if (forceConnected(address, callbackContext)) {
             return;
         }
 
