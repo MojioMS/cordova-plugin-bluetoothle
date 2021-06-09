@@ -3527,25 +3527,25 @@ public class BluetoothLePlugin extends CordovaPlugin {
         return true;
     }
 
-    private boolean forceConnected(String address, CallbackContext callbackContext) {
-        HashMap<Object, Object> connection = connections.get(address);
-//        if (connection != null) {
-//        BluetoothGatt peripheral = (BluetoothGatt) connection.get(keyPeripheral);
-//        BluetoothDevice device = peripheral.getDevice();
-
-        JSONObject returnObj = new JSONObject();
-
-        addProperty(returnObj, keyError, errorConnect);
-        addProperty(returnObj, keyMessage, logPreviouslyConnected);
-
-        addDevice(returnObj, device);
-
-        callbackContext.error(returnObj);
-
-        return true;
-//        }
-//        return false;
-    }
+//    private boolean forceConnected(String address, CallbackContext callbackContext) {
+//        HashMap<Object, Object> connection = connections.get(address);
+////        if (connection != null) {
+////        BluetoothGatt peripheral = (BluetoothGatt) connection.get(keyPeripheral);
+////        BluetoothDevice device = peripheral.getDevice();
+//
+//        JSONObject returnObj = new JSONObject();
+//
+//        addProperty(returnObj, keyError, errorConnect);
+//        addProperty(returnObj, keyMessage, logPreviouslyConnected);
+//
+//        addDevice(returnObj, device);
+//
+//        callbackContext.error(returnObj);
+//
+//        return true;
+////        }
+////        return false;
+//    }
 
     private boolean wasConnected(String address, CallbackContext callbackContext) {
         HashMap<Object, Object> connection = connections.get(address);
