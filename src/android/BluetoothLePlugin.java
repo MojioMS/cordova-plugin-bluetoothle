@@ -91,7 +91,6 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
     //Queueing
     private LinkedList<Operation> queue = new LinkedList<Operation>();
-    min
 
     //Object keys
     private final String keyStatus = "status";
@@ -1009,7 +1008,6 @@ public class BluetoothLePlugin extends CordovaPlugin {
         }
     }
 
-
     /**
      * Retrieves a minimal set of adapter details
      * (address, name, initialized state, enabled state, scanning state, discoverable state)
@@ -1047,7 +1045,6 @@ public class BluetoothLePlugin extends CordovaPlugin {
             callbackContext.sendPluginResult(pluginResult);
             return;
         }
-
     }
 
     private void enableAction(CallbackContext callbackContext) {
@@ -1450,10 +1447,12 @@ public class BluetoothLePlugin extends CordovaPlugin {
         }
 
         if (wasConnected(address, callbackContext)) {
-            return;
-        } else if (forceConnected(address, callbackContext)) {
+            System.out.println('wasConnected is true!');
             return;
         }
+//        else if (forceConnected(address, callbackContext)) {
+//            return;
+//        }
 
         // force wasConnected callback:
 
@@ -1981,40 +1980,48 @@ public class BluetoothLePlugin extends CordovaPlugin {
         JSONArray args = operation.args;
         CallbackContext callbackContext = operation.callbackContext;
 
+        Log.d("BLE writeAction", "isNotInitialized checking");
         if (isNotInitialized(callbackContext, true)) {
             return false;
         }
 
+        Log.d("BLE writeAction", "isNotArgsObject checking");
         JSONObject obj = getArgsObject(args);
         if (isNotArgsObject(obj, callbackContext)) {
             return false;
         }
 
+        Log.d("BLE writeAction", "isNotAddress checking");
         String address = getAddress(obj);
         if (isNotAddress(address, callbackContext)) {
             return false;
         }
 
+        Log.d("BLE writeAction", "wasNeverConnected checking");
         HashMap<Object, Object> connection = wasNeverConnected(address, callbackContext);
         if (connection == null) {
             return false;
         }
 
+        Log.d("BLE writeAction", "connection.get(keyPeripheral) checking");
         BluetoothGatt bluetoothGatt = (BluetoothGatt) connection.get(keyPeripheral);
         BluetoothDevice device = bluetoothGatt.getDevice();
 
+        Log.d("BLE writeAction", "isNotConnected checking");
         if (isNotConnected(connection, device, callbackContext)) {
             return false;
         }
 
         BluetoothGattService service = getService(bluetoothGatt, obj);
 
+        Log.d("BLE writeAction", "isNotService checking");
         if (isNotService(service, device, callbackContext)) {
             return false;
         }
 
         BluetoothGattCharacteristic characteristic = getCharacteristic(obj, service);
 
+        Log.d("BLE writeAction", "isNotCharacteristic checking");
         if (isNotCharacteristic(characteristic, device, callbackContext)) {
             return false;
         }
@@ -2029,6 +2036,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
         byte[] value = getPropertyBytes(obj, keyValue);
 
+        Log.d("BLE writeAction", "value == null checking");
         if (value == null) {
             addProperty(returnObj, keyError, errorWrite);
             addProperty(returnObj, keyMessage, logWriteValueNotFound);
@@ -2041,6 +2049,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
         boolean result = characteristic.setValue(value);
 
+        Log.d("BLE writeAction", "!characteristic.setValue(value) checking");
         if (!result) {
             addProperty(returnObj, keyError, errorWrite);
             addProperty(returnObj, keyMessage, logWriteValueNotSet);
@@ -2048,10 +2057,13 @@ public class BluetoothLePlugin extends CordovaPlugin {
             return false;
         }
 
+        Log.d("BLE writeAction", "AddCallback(characteristicUuid, connection, operationWrite, callbackContext); checking");
         AddCallback(characteristicUuid, connection, operationWrite, callbackContext);
 
+        Log.d("BLE writeAction", "bluetoothGatt.writeCharacteristic(characteristic); checking");
         result = bluetoothGatt.writeCharacteristic(characteristic);
 
+        Log.d("BLE writeAction", "!result checking");
         if (!result) {
             addProperty(returnObj, keyError, errorWrite);
             addProperty(returnObj, keyMessage, logWriteFail);
@@ -2060,9 +2072,9 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
             return false;
         }
-
         operation.device = device;
 
+        Log.d("BLE writeAction", "operation.device checking");
         return true;
     }
 
@@ -3144,6 +3156,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
         if (operation.type.equals("read")) {
             result = readAction(operation);
         } else if (operation.type.equals("write")) {
+            Log.d('writeAction', "WriteAction calling...");
             result = writeAction(operation);
         } else if (operation.type.equals("readDescriptor")) {
             result = readDescriptorAction(operation);
@@ -4519,7 +4532,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
 
         //TODO implement this later
         public void onExecuteWrite(BluetoothDevice device, int requestId, boolean execute) {
-            //Log.d("BLE", "execute write");
+            Log.d("BLE", "onExecuteWrite is called...doing nothing.");
         }
 
         public void onMtuChanged(BluetoothDevice device, int mtu) {
