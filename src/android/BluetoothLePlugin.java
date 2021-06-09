@@ -1447,7 +1447,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
         }
 
         if (wasConnected(address, callbackContext)) {
-            System.out.println('wasConnected is true!');
+            Log.d("wasConnected", " is true!");
             return;
         }
 //        else if (forceConnected(address, callbackContext)) {
@@ -3156,7 +3156,7 @@ public class BluetoothLePlugin extends CordovaPlugin {
         if (operation.type.equals("read")) {
             result = readAction(operation);
         } else if (operation.type.equals("write")) {
-            Log.d('writeAction', "WriteAction calling...");
+            Log.d("writeAction", "WriteAction calling...");
             result = writeAction(operation);
         } else if (operation.type.equals("readDescriptor")) {
             result = readDescriptorAction(operation);
